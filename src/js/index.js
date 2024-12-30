@@ -1,3 +1,5 @@
 import '../css/styles.css';
-
-document.addEventListener('DOMContentLoaded', () => {});
+import { addOptionFocus } from './dom';
+document.addEventListener('DOMContentLoaded', () => {
+  addOptionFocus();
+});

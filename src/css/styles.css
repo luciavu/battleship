@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
   --dark: rgb(44, 44, 44);
@@ -6,12 +6,73 @@
 }
 
 * {
-  font-family: 'Tiny5', Arial, sans-serif;
+  font-family: 'Press Start 2P', Arial, sans-serif;
   box-sizing: border-box;
   font-size: 16px;
-  color: var(--dark);
+  color: var(--light);
 }
 
 body {
   margin: 0;
+  height: 100vh;
+  background-image: url('../img/2.jpg');
+  background-size: cover;
+}
+
+header {
+  position: absolute;
+  display: flex;
+  width: 100vw;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+}
+
+header * {
+  cursor: pointer;
+}
+
+.titlescreen {
+  height: 100%;
+  display: flex;
+  gap: 4rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  cursor: pointer;
+  padding-top: 5rem;
+  font-size: 4rem;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  justify-content: left;
+  gap: 0.8rem;
+}
+
+.option * {
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+
+.arrow {
+  position: absolute;
+  visibility: hidden;
+  font-size: 1.8rem;
+  left: -3rem;
+  top: -0.8rem;
+}
+
+.option:hover,
+header *:hover {
+  opacity: 0.7;
 }
