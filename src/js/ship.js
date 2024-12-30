@@ -13,6 +13,7 @@ export default class Ship {
 
   isSunk() {
     this.hasSunk = this.length === this.hits;
+    console.log('hi', this.hasSunk);
     return this.hasSunk;
   }
 }
