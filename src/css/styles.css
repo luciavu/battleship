@@ -1,34 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
-  --dark: rgb(44, 44, 44);
-  --light: rgb(212, 212, 212);
+  --light: rgb(255, 253, 231);
+  --dark: rgb(64, 64, 230);
 }
 
 * {
   font-family: 'Press Start 2P', Arial, sans-serif;
   box-sizing: border-box;
   font-size: 16px;
-  color: var(--light);
+  color: var(--dark);
 }
 
 body {
   margin: 0;
   height: 100vh;
-  background-image: url('../img/2.jpg');
-  background-size: cover;
+  background-color: var(--light);
 }
 
 header {
   position: absolute;
   display: flex;
-  width: 100vw;
+  width: 100%;
+  padding: 2rem 2rem;
   justify-content: space-between;
-  padding: 1.5rem 3rem;
+  display: none;
 }
 
 header * {
   cursor: pointer;
+  color: var(--light);
 }
 
 .titlescreen {
@@ -38,9 +39,13 @@ header * {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: var(--dark);
+  display: none;
 }
 
 .title {
+  text-shadow: 0.3rem 0.2rem 0.01rem rgb(114, 147, 245);
+  color: antiquewhite;
   cursor: pointer;
   padding-top: 5rem;
   font-size: 4rem;
@@ -62,6 +67,8 @@ header * {
 .option * {
   cursor: pointer;
   font-size: 1.4rem;
+  letter-spacing: 0.1rem;
+  color: rgb(252, 230, 102);
 }
 
 .arrow {
@@ -74,5 +81,158 @@ header * {
 
 .option:hover,
 header *:hover {
-  opacity: 0.7;
+  opacity: 0.8;
+}
+
+.rules {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  padding: 2rem;
+  display: none;
+  flex-direction: column;
+  gap: 2rem;
+  line-height: 1.5rem;
+  z-index: 1;
+  background-color: var(--light);
+}
+
+#back {
+  cursor: pointer;
+  background-color: var(--dark);
+  width: fit-content;
+  padding: 0 0.6rem;
+  color: var(--light);
+}
+
+.description,
+.description * {
+  font-size: 0.85rem;
+}
+
+li {
+  padding-left: 1rem;
+  list-style-type: square;
+}
+table {
+  padding-top: 1rem;
+}
+
+td,
+th {
+  font-size: 0.7rem;
+  border: 0.01rem solid var(--dark);
+  padding: 0.3rem 0.3rem;
+}
+
+td {
+  text-align: center;
+}
+
+.ship-selection {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#setup-grid {
+  padding: 2rem 0;
+  display: grid;
+  padding-right: 1.5rem;
+  grid-template-columns: repeat(9, 2.5rem);
+  grid-template-rows: repeat(9, 2.5rem);
+}
+
+#player-board,
+#computer-board {
+  padding: 1.4rem 0;
+  display: grid;
+  padding-right: 1.5rem;
+  grid-template-columns: repeat(9, 2.2rem);
+  grid-template-rows: repeat(9, 2.2rem);
+}
+
+.square {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+  outline: 0.01rem solid var(--dark);
+  opacity: 0.8;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.xLabel {
+  justify-self: center;
+  align-self: start;
+  color: var(--dark);
+  padding-top: 0.8rem;
+  font-size: 0.8rem;
+}
+
+.yLabel {
+  justify-self: end;
+  align-self: center;
+  color: var(--dark);
+  padding-right: 1.2rem;
+
+  font-size: 0.8rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+}
+.settings {
+  cursor: pointer;
+  display: flex;
+  gap: 3rem;
+}
+
+#start-game {
+  cursor: pointer;
+  margin-top: 1.3rem;
+  font-size: 1.3rem;
+  color: var(--light);
+  background-color: var(--dark);
+  padding: 0.6rem;
+}
+
+.game {
+  padding: 2rem;
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: center;
+  height: 100vh;
+}
+
+.gameboards {
+  padding-top: 1.3rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.remaining-ships {
+  font-size: 0.7rem;
+}
+
+.attack {
+  margin-top: 0.2rem;
+  font-weight: 800;
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 1.2rem;
+}
+.visible {
+  display: flex;
 }

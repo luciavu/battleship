@@ -6,23 +6,97 @@
     <title>Battleship</title>
   </head>
   <body>
-    <header>
-      <div class="credits">Credits</div>
-      <div class="rules">Rules</div>
-      <div class="quit">Quit</div>
+    <header class="visible">
+      <div id="credits">Credits</div>
+      <div id="rules">Rules</div>
     </header>
-    <div class="titlescreen">
+    <!--Title screen-->
+    <div class="titlescreen visible">
       <div class="title">BATTLESHIP</div>
       <div class="options">
         <div class="option">
-          <div class="arrow" id="2parrow">⏵</div>
-          <div class="option-text" id="2p">PLAYER vs PLAYER</div>
-        </div>
-        <div class="option">
           <div class="arrow" id="computerarrow">⏵</div>
-          <div class="option-text" id="computer">PLAYER vs COMPUTER</div>
+          <div class="option-text" id="computer">START GAME</div>
         </div>
       </div>
+    </div>
+    <!--Rules-->
+    <div class="rules">
+      <div id="back">&lt BACK</div>
+      <div class="description">
+        Battleship is a discovery game in which players need to discover their opponent's ship
+        positions.
+      </div>
+      <div class="description">
+        Each player secretly arranges their ships on their grid, either horizontically or
+        vertically. The number of squares taken up by each ship is determined by their type. Both
+        players have the same number and type of ships:
+        <table>
+          <tr>
+            <th>No.</th>
+            <th>Type</th>
+            <th>Length</th>
+          </tr>
+          <tr>
+            <td>1x</td>
+            <td>Battleship</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>2x</td>
+            <td>Submarine</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>3x</td>
+            <td>Patrol Boat</td>
+            <td>2</td>
+          </tr>
+        </table>
+      </div>
+      <div class="description">
+        After ships have been positioned, players will take turns to target a square on the
+        opponents board to attack.
+        <ul>
+          <li>a 'hit' is marked by an X</li>
+          <li>a 'miss' is marked by a .</li>
+        </ul>
+      </div>
+      <div class="description">
+        If all of a player's ships have been sunk, the game is over and their opponent wins.
+      </div>
+    </div>
+
+    <!--Ship setup-->
+    <div class="ship-selection visible">
+      <div class="heading">Ship selection</div>
+      <div id="setup-grid"></div>
+      <div class="settings">
+        <div id="rotate">Rotate</div>
+        <div id="reset">Reset</div>
+        <div id="random">Random</div>
+      </div>
+      <div id="start-game">Start Game</div>
+    </div>
+
+    <!--Game-->
+    <div class="game visible">
+      <div class="round-counter">ROUND 39</div>
+      <div class="heading">MESSAGE HIT!</div>
+      <div class="gameboards">
+        <div class="player-info">
+          <div class="name">Player 1 (You)</div>
+          <div id="player-board"></div>
+          <div class="remaining-ships">Remaining Ships: 3</div>
+        </div>
+        <div class="computer-info">
+          <div class="name">Computer</div>
+          <div id="computer-board"></div>
+          <div class="remaining-ships">Remaining Ships: 3</div>
+        </div>
+      </div>
+
+      <div class="attack">LAUNCH ATTACK</div>
     </div>
   </body>
 </html>
