@@ -214,6 +214,7 @@ td {
   color: var(--light);
   background-color: var(--dark);
   padding: 0.6rem;
+  border: none;
 }
 
 .game {
@@ -237,12 +238,14 @@ td {
   font-size: 0.7rem;
 }
 
-.attack {
+#attack {
+  cursor: pointer;
+  border: none;
   margin-top: 0.2rem;
   font-weight: 800;
   background-color: var(--dark);
   color: var(--light);
-  opacity: 0.6;
+  opacity: 1;
   padding: 1rem 1.2rem;
 }
 
@@ -250,7 +253,8 @@ td {
   display: flex;
 }
 
-.pressable {
-  cursor: pointer;
-  opacity: 1;
+#attack:disabled,
+#start-game:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }

@@ -1,5 +1,6 @@
 import Player from './player';
 import { renderGameboard, addShipSetupListeners } from '../utils/dom';
+
 export default class Game {
   constructor(player1, player2) {
     this.player1 = new Player('Player 1', 'player');

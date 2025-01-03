@@ -1,11 +1,12 @@
-import Gameboard from '../modules/gameboard';
+import Game from '../modules/Game';
+
 // Page navigation
 export const addNavigationEventListeners = () => {
   const rules = document.querySelector('.rules');
   const rulesBtn = document.getElementById('rules');
   const backBtn = document.getElementById('back');
-
   const singleplayer = document.getElementById('computer');
+  const startBtn = document.getElementById('start-game');
 
   rulesBtn.addEventListener('click', () => {
     rules.classList.add('visible');
@@ -17,11 +18,12 @@ export const addNavigationEventListeners = () => {
 
   singleplayer.addEventListener('click', () => {
     // Make a Game with one player, one computer
+    const game = new Game();
+    game.newGame();
 
     // Change header color
     const headerOptions = document.getElementsByClassName('header-option');
     Array.from(headerOptions).forEach((option) => {
-      console.log(option.id);
       option.style.color = 'var(--dark)';
     });
 
@@ -30,6 +32,14 @@ export const addNavigationEventListeners = () => {
     const selection = document.querySelector('.ship-selection');
     titlescreen.classList.remove('visible');
     selection.classList.add('visible');
+  });
+
+  startBtn.addEventListener('click', () => {
+    // Hide setup page
+    document.querySelector('.ship-selection').classList.remove('visible');
+
+    // Move to game page
+    document.querySelector('.game').classList.add('visible');
   });
 };
 
@@ -70,7 +80,6 @@ export const addShipSetupListeners = (playerBoard, grid) => {
   const randomBtn = document.getElementById('random');
   if (randomBtn) {
     randomBtn.addEventListener('click', () => {
-      console.log('call');
       resetShips(playerBoard, grid);
       randomiseShips(playerBoard);
     });
@@ -81,6 +90,7 @@ export const addShipSetupListeners = (playerBoard, grid) => {
 
 const resetShips = (playerBoard, grid) => {
   playerBoard.ships = [];
+  document.getElementById('start-game').disabled = true; // Disable start button
   renderGameboard(playerBoard, grid, true);
 };
 
@@ -91,8 +101,8 @@ const randomiseShips = (playerBoard) => {
     const x = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
     const y = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
     renderPlacement(playerBoard, x, y, 'click', true);
-    console.log(playerBoard.ships.length);
   }
+  document.getElementById('start-game').disabled = false; // Allow start game
 };
 
 const getShipLength = (gameboard) => {
@@ -123,8 +133,10 @@ const renderPlacement = (gameboard, x, y, method, randDirection = false) => {
     }
   } else if (method === 'click') {
     if (gameboard.placeShip(x, gameboard.size - 1 - y, shipLength, direction)) {
-      console.log('Placed ship');
       renderShips(coordinates, method);
+      if (gameboard.ships.length === 6) {
+        document.getElementById('start-game').disabled = false; // Allow start game
+      }
     }
   } else if (method === 'mouseout') {
     renderShips(coordinates, method);
@@ -139,7 +151,6 @@ const renderShips = (coordinates, method) => {
       if (method === 'click') {
         squareElement.classList.remove('position');
         squareElement.classList.add('ship');
-        console.log('here', squareElement);
       } else if (method === 'mouseover') {
         squareElement.classList.add('position');
       } else if (method === 'mouseout') {

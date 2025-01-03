@@ -7,7 +7,11 @@
   </head>
   <body>
     <header class="visible">
-      <div id="credits" class="header-option">Credits</div>
+      <div id="credits">
+        <a class="header-option" href="https://github.com/luciavu/battleship" target="_blank"
+          >Credits</a
+        >
+      </div>
       <div id="rules" class="header-option">Rules</div>
     </header>
     <!--Title screen-->
@@ -68,7 +72,7 @@
     </div>
 
     <!--Ship setup-->
-    <div class="ship-selection visible">
+    <div class="ship-selection">
       <div class="heading">Ship selection</div>
       <div id="setup-grid"></div>
       <div class="settings">
@@ -76,11 +80,11 @@
         <div id="reset">Reset</div>
         <div id="random">Random</div>
       </div>
-      <div id="start-game">Start Game</div>
+      <button id="start-game" disabled>Start Game</button>
     </div>
 
     <!--Game-->
-    <div class="game visible">
+    <div class="game">
       <div class="round-counter">ROUND 39</div>
       <div class="heading">MESSAGE HIT!</div>
       <div class="gameboards">
@@ -96,7 +100,7 @@
         </div>
       </div>
 
-      <div class="attack">LAUNCH ATTACK</div>
+      <button id="attack" disabled>LAUNCH ATTACK</button>
     </div>
   </body>
 </html>
