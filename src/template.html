@@ -60,7 +60,7 @@
       </div>
       <div class="description">
         After ships have been positioned, players will take turns to target a square on the
-        opponents board to attack.
+        opponent's board to attack. <strong>If you land an attack, you can go again.</strong>
         <ul>
           <li>a 'hit' is marked by an X</li>
           <li>a 'miss' is marked by a .</li>
@@ -85,18 +85,24 @@
 
     <!--Game-->
     <div class="game">
-      <div class="round-counter">ROUND 39</div>
-      <div class="heading">MESSAGE HIT!</div>
+      <div class="round-counter"></div>
+      <div class="heading game-status">MESSAGE HIT!</div>
       <div class="gameboards">
         <div class="player-info">
-          <div class="name">Player 1 (You)</div>
+          <div class="details">
+            <div class="player-name name"></div>
+            <div class="player-turn turn">TURN</div>
+          </div>
           <div id="player-board"></div>
-          <div class="remaining-ships">Remaining Ships: 3</div>
+          <div class="player-remaining-ships remaining-ships">Remaining Ships: 3</div>
         </div>
         <div class="computer-info">
-          <div class="name">Computer</div>
+          <div class="details">
+            <div class="computer-name name"></div>
+            <div class="computer-turn turn">TURN</div>
+          </div>
           <div id="computer-board"></div>
-          <div class="remaining-ships">Remaining Ships: 3</div>
+          <div class="computer-remaining-ships remaining-ships">Remaining Ships: 3</div>
         </div>
       </div>
 

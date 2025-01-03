@@ -1,21 +1,8 @@
 import Game from '../modules/Game';
+import Gameboard from '../modules/gameboard';
 
-// Page navigation
-export const addNavigationEventListeners = () => {
-  const rules = document.querySelector('.rules');
-  const rulesBtn = document.getElementById('rules');
-  const backBtn = document.getElementById('back');
+export const startGame = () => {
   const singleplayer = document.getElementById('computer');
-  const startBtn = document.getElementById('start-game');
-
-  rulesBtn.addEventListener('click', () => {
-    rules.classList.add('visible');
-  });
-
-  backBtn.addEventListener('click', () => {
-    rules.classList.remove('visible');
-  });
-
   singleplayer.addEventListener('click', () => {
     // Make a Game with one player, one computer
     const game = new Game();
@@ -32,20 +19,36 @@ export const addNavigationEventListeners = () => {
     const selection = document.querySelector('.ship-selection');
     titlescreen.classList.remove('visible');
     selection.classList.add('visible');
+
+    const startBtn = document.getElementById('start-game');
+    startBtn.addEventListener('click', () => {
+      // Hide and clear setup page
+      document.querySelector('.ship-selection').classList.remove('visible');
+      document.getElementById('setup-grid').innerHTML = '';
+      // Move to game page
+      document.querySelector('.game').classList.add('visible');
+      renderGameState(game);
+    });
   });
 
-  startBtn.addEventListener('click', () => {
-    // Hide setup page
-    document.querySelector('.ship-selection').classList.remove('visible');
+  addNavigationEventListeners();
+};
+// Page navigation
+export const addNavigationEventListeners = () => {
+  const rules = document.querySelector('.rules');
+  const rulesBtn = document.getElementById('rules');
+  const backBtn = document.getElementById('back');
 
-    // Move to game page
-    document.querySelector('.game').classList.add('visible');
+  rulesBtn.addEventListener('click', () => {
+    rules.classList.add('visible');
+  });
+
+  backBtn.addEventListener('click', () => {
+    rules.classList.remove('visible');
   });
 };
 
 // Title screen DOM
-
-// Adjust arrow visibility
 export const addOptionFocus = () => {
   const options = document.getElementsByClassName('option-text');
   Array.from(options).forEach((option) => {
@@ -61,6 +64,7 @@ export const addOptionFocus = () => {
   });
 };
 
+// Setup DOM
 export const addShipSetupListeners = (playerBoard, grid) => {
   const resetBtn = document.getElementById('reset');
   if (resetBtn) {
@@ -81,38 +85,56 @@ export const addShipSetupListeners = (playerBoard, grid) => {
   if (randomBtn) {
     randomBtn.addEventListener('click', () => {
       resetShips(playerBoard, grid);
-      randomiseShips(playerBoard);
+      randomiseShips(playerBoard, 'player');
     });
   }
 };
 
-// Helper functions
+// Game DOM
+const renderGameState = (game) => {
+  const player = game.player1;
+  const computer = game.player2;
+  const result = 'HIT! GO AGAIN.'; // Hit, ship sunk, win, loss, miss
+  // Round
+  document.querySelector('.round-counter').textContent = `ROUND ${game.round}`;
+  // Game status
+  document.querySelector('.game-status').textContent = `${result}`;
+  // Names
+  document.querySelector('.player-name').textContent = `${player.name}`;
+  document.querySelector('.computer-name').textContent = computer.name;
+  // Turn
+  const turn = game.turn === player ? '.player-turn' : '.computer-turn';
+  const prevTurn = turn === '.player-turn' ? '.computer-turn' : '.player-turn';
+  document.querySelector(turn).style.visibility = 'visible';
+  document.querySelector(prevTurn).style.visibility = 'hidden';
+  // Ships remaining
 
-const resetShips = (playerBoard, grid) => {
-  playerBoard.ships = [];
-  document.getElementById('start-game').disabled = true; // Disable start button
-  renderGameboard(playerBoard, grid, true);
+  document.querySelector(
+    '.player-remaining-ships'
+  ).textContent = `Remaining Ships: ${player.board.remainingShips()}`;
+
+  document.querySelector(
+    '.computer-remaining-ships'
+  ).textContent = `Remaining Ships: ${computer.board.remainingShips()}`;
+  console.log(computer.board.ships);
+
+  // Gameboards
+  const playerGrid = document.getElementById('player-board');
+  renderGameboard(player.board, playerGrid, player.type);
+  player.board.ships.forEach((shipInfo) => {
+    renderShips(shipInfo.coordinates, 'click', player.type);
+  });
+
+  const computerGrid = document.getElementById('computer-board');
+  // Randomise computer board
+  randomiseShips(computer.board, computer.type);
+  renderGameboard(computer.board, computerGrid, computer.type);
+  computer.board.ships.forEach((shipInfo) => {
+    renderShips(shipInfo.coordinates, 'click', computer.type);
+  });
 };
 
-const randomiseShips = (playerBoard) => {
-  const minCeiled = 0;
-  const maxFloored = Math.floor(playerBoard.size);
-  while (playerBoard.ships.length < 6) {
-    const x = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
-    const y = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
-    renderPlacement(playerBoard, x, y, 'click', true);
-  }
-  document.getElementById('start-game').disabled = false; // Allow start game
-};
-
-const getShipLength = (gameboard) => {
-  if (gameboard.ships.length === 0) return 4;
-  if (gameboard.ships.length <= 2) return 3;
-  if (gameboard.ships.length <= 5) return 2;
-  return 0;
-};
-
-const renderPlacement = (gameboard, x, y, method, randDirection = false) => {
+const renderPlacement = (gameboard, x, y, method, player, randDirection = false) => {
   const shipLength = getShipLength(gameboard);
   const rotateButton = document.getElementById('rotate');
   let direction;
@@ -129,23 +151,23 @@ const renderPlacement = (gameboard, x, y, method, randDirection = false) => {
 
   if (method === 'mouseover') {
     if (gameboard.isValidPlacement(coordinates)) {
-      renderShips(coordinates, method);
+      renderShips(coordinates, method, player);
     }
   } else if (method === 'click') {
     if (gameboard.placeShip(x, gameboard.size - 1 - y, shipLength, direction)) {
-      renderShips(coordinates, method);
+      renderShips(coordinates, method, player);
       if (gameboard.ships.length === 6) {
         document.getElementById('start-game').disabled = false; // Allow start game
       }
     }
   } else if (method === 'mouseout') {
-    renderShips(coordinates, method);
+    renderShips(coordinates, method, player);
   }
 };
 
-const renderShips = (coordinates, method) => {
+export const renderShips = (coordinates, method, player) => {
   coordinates.forEach(([x, y]) => {
-    const squareElement = document.getElementById(`${x}${y}`);
+    const squareElement = document.getElementById(`${player}${x}${y}`);
 
     if (squareElement) {
       if (method === 'click') {
@@ -160,7 +182,7 @@ const renderShips = (coordinates, method) => {
   });
 };
 
-export const renderGameboard = (gameboard, grid, setup = false) => {
+export const renderGameboard = (gameboard, grid, player, setup = false) => {
   grid.innerHTML = '';
 
   for (let i = 0; i < gameboard.size; i++) {
@@ -185,25 +207,50 @@ export const renderGameboard = (gameboard, grid, setup = false) => {
     for (let j = 0; j < gameboard.size; j++) {
       const square = document.createElement('div');
       square.classList.add('square');
-      square.id = `${j}${gameboard.size - 1 - i}`;
+      square.id = `${player}${j}${gameboard.size - 1 - i}`;
       square.style.gridRow = `${i + 2}`;
       square.style.gridColumn = `${j + 2}`;
 
       if (setup) {
         square.addEventListener('click', () => {
-          renderPlacement(gameboard, j, i, 'click');
+          renderPlacement(gameboard, j, i, 'click', player);
         });
 
         square.addEventListener('mouseover', () => {
-          renderPlacement(gameboard, j, i, 'mouseover');
+          renderPlacement(gameboard, j, i, 'mouseover', player);
         });
 
         square.addEventListener('mouseout', () => {
-          renderPlacement(gameboard, j, i, 'mouseout');
+          renderPlacement(gameboard, j, i, 'mouseout', player);
         });
       }
 
       grid.append(square);
     }
   }
+};
+
+// Helper functions
+const resetShips = (playerBoard, grid) => {
+  playerBoard.ships = [];
+  document.getElementById('start-game').disabled = true; // Disable start button
+  renderGameboard(playerBoard, grid, 'player', true);
+};
+
+const randomiseShips = (board, player) => {
+  const minCeiled = 0;
+  const maxFloored = Math.floor(board.size);
+  while (board.ships.length < 6) {
+    const x = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+    const y = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+    renderPlacement(board, x, y, 'click', player, true);
+  }
+  document.getElementById('start-game').disabled = false; // Allow start game
+};
+
+const getShipLength = (gameboard) => {
+  if (gameboard.ships.length === 0) return 4;
+  if (gameboard.ships.length <= 2) return 3;
+  if (gameboard.ships.length <= 5) return 2;
+  return 0;
 };

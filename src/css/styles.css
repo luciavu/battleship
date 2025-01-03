@@ -234,8 +234,27 @@ td {
   justify-content: space-evenly;
 }
 
+#player-board.square {
+  cursor: none;
+}
+
 .remaining-ships {
   font-size: 0.7rem;
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: -2rem;
+}
+
+.turn {
+  visibility: hidden;
+  font-size: 0.9rem;
+  background-color: var(--dark);
+  color: var(--light);
+  padding: 0.5rem 0.6rem;
 }
 
 #attack {

@@ -68,6 +68,12 @@ export default class Gameboard {
     }
   }
 
+  remainingShips() {
+    return this.ships.filter((shipData) => {
+      return !shipData.ship.isSunk();
+    }).length;
+  }
+
   // True if all ships on board return true for isSunk()
   allShipsSunk() {
     return this.ships.every((shipData) => {
