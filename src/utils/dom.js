@@ -1,5 +1,6 @@
+import Gameboard from '../modules/gameboard';
 // Page navigation
-const addNavigationEventListeners = () => {
+export const addNavigationEventListeners = () => {
   const rules = document.querySelector('.rules');
   const rulesBtn = document.getElementById('rules');
   const backBtn = document.getElementById('back');
@@ -17,6 +18,13 @@ const addNavigationEventListeners = () => {
   singleplayer.addEventListener('click', () => {
     // Make a Game with one player, one computer
 
+    // Change header color
+    const headerOptions = document.getElementsByClassName('header-option');
+    Array.from(headerOptions).forEach((option) => {
+      console.log(option.id);
+      option.style.color = 'var(--dark)';
+    });
+
     // Move to ship selection
     const titlescreen = document.querySelector('.titlescreen');
     const selection = document.querySelector('.ship-selection');
@@ -25,7 +33,6 @@ const addNavigationEventListeners = () => {
   });
 };
 
-addNavigationEventListeners();
 // Title screen DOM
 
 // Adjust arrow visibility
@@ -44,56 +51,148 @@ export const addOptionFocus = () => {
   });
 };
 
-// Rules DOM
-const addRulesPopup = () => {
-  // Save previous page type, change to rules page.
-  const active = document.querySelector('.active');
-};
-const addBackButtonEventListener = () => {
-  // Go back to prev page from rules page.
-  const backButton = document.getElementById('back');
-  backButton.addEventListener();
-};
+export const addShipSetupListeners = (playerBoard, grid) => {
+  const resetBtn = document.getElementById('reset');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      resetShips(playerBoard, grid);
+    });
+  }
 
-// Boat Setup DOM
-const boatSetUp = () => {
-  const grid = document.getElementById('setup-grid');
-  console.log(grid);
-  renderGrid(grid, 0);
-};
-// Game DOM
+  const rotateBtn = document.getElementById('rotate');
+  if (rotateBtn) {
+    rotateBtn.addEventListener('click', () => {
+      rotateBtn.classList.toggle('horizontal');
+      rotateBtn.classList.toggle('vertical');
+    });
+  }
 
-// Helper functions
-const renderGrid = (grid, gridInfo, setup = false) => {
-  // Render ships onto 8x8 gameboard based on array of coordinates
-  for (let i = 1; i <= 9; i++) {
-    for (let j = -1; j <= 7; j++) {
-      if (i == 9 && j != -1) {
-        // Add x labels -> a - h
-        const xLabel = document.createElement('div');
-        xLabel.classList.add('xLabel');
-        xLabel.textContent = `${String.fromCharCode(97 + j)}`;
-        grid.append(xLabel);
-      } else if (j == -1 && i != 9) {
-        // Add y labels -> 0 - 7
-        const yLabel = document.createElement('div');
-        yLabel.classList.add('yLabel');
-        yLabel.textContent = `${8 - i}`;
-        grid.append(yLabel);
-      } else {
-        // Add chessboard squares
-        const square = document.createElement('div');
-        square.classList.add('square');
-        square.id = `${String.fromCharCode(97 + j)}${9 - i}`;
-        if (square.id === '`0') {
-          square.classList.add('hidden');
-        }
-        grid.append(square);
-      }
-    }
+  const randomBtn = document.getElementById('random');
+  if (randomBtn) {
+    randomBtn.addEventListener('click', () => {
+      console.log('call');
+      resetShips(playerBoard, grid);
+      randomiseShips(playerBoard);
+    });
   }
 };
 
-boatSetUp();
-renderGrid(document.getElementById('player-board', 0));
-renderGrid(document.getElementById('computer-board', 0));
+// Helper functions
+
+const resetShips = (playerBoard, grid) => {
+  playerBoard.ships = [];
+  renderGameboard(playerBoard, grid, true);
+};
+
+const randomiseShips = (playerBoard) => {
+  const minCeiled = 0;
+  const maxFloored = Math.floor(playerBoard.size);
+  while (playerBoard.ships.length < 6) {
+    const x = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+    const y = Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled);
+    renderPlacement(playerBoard, x, y, 'click', true);
+    console.log(playerBoard.ships.length);
+  }
+};
+
+const getShipLength = (gameboard) => {
+  if (gameboard.ships.length === 0) return 4;
+  if (gameboard.ships.length <= 2) return 3;
+  if (gameboard.ships.length <= 5) return 2;
+  return 0;
+};
+
+const renderPlacement = (gameboard, x, y, method, randDirection = false) => {
+  const shipLength = getShipLength(gameboard);
+  const rotateButton = document.getElementById('rotate');
+  let direction;
+  if (randDirection) {
+    direction = Math.floor(Math.random() * 2) ? 'horizontal' : 'vertical';
+  } else {
+    direction = rotateButton ? rotateButton.classList[0] : 'horizontal';
+  }
+
+  const coordinates =
+    direction === 'horizontal'
+      ? gameboard.getShipCoordinates(x, gameboard.size - 1 - y, shipLength, 'horizontal')
+      : gameboard.getShipCoordinates(x, gameboard.size - 1 - y, shipLength, 'vertical');
+
+  if (method === 'mouseover') {
+    if (gameboard.isValidPlacement(coordinates)) {
+      renderShips(coordinates, method);
+    }
+  } else if (method === 'click') {
+    if (gameboard.placeShip(x, gameboard.size - 1 - y, shipLength, direction)) {
+      console.log('Placed ship');
+      renderShips(coordinates, method);
+    }
+  } else if (method === 'mouseout') {
+    renderShips(coordinates, method);
+  }
+};
+
+const renderShips = (coordinates, method) => {
+  coordinates.forEach(([x, y]) => {
+    const squareElement = document.getElementById(`${x}${y}`);
+
+    if (squareElement) {
+      if (method === 'click') {
+        squareElement.classList.remove('position');
+        squareElement.classList.add('ship');
+        console.log('here', squareElement);
+      } else if (method === 'mouseover') {
+        squareElement.classList.add('position');
+      } else if (method === 'mouseout') {
+        squareElement.classList.remove('position');
+      }
+    }
+  });
+};
+
+export const renderGameboard = (gameboard, grid, setup = false) => {
+  grid.innerHTML = '';
+
+  for (let i = 0; i < gameboard.size; i++) {
+    const yLabel = document.createElement('div');
+    yLabel.classList.add('yLabel');
+    yLabel.textContent = `${gameboard.size - 1 - i}`;
+    yLabel.style.gridRow = `${i + 2}`;
+    yLabel.style.gridColumn = `1`;
+    grid.append(yLabel);
+  }
+
+  for (let i = 0; i < gameboard.size; i++) {
+    const xLabel = document.createElement('div');
+    xLabel.classList.add('xLabel');
+    xLabel.textContent = `${String.fromCharCode(97 + i)}`;
+    xLabel.style.gridRow = `${gameboard.size + 2}`;
+    xLabel.style.gridColumn = `${i + 2}`;
+    grid.append(xLabel);
+  }
+
+  for (let i = 0; i < gameboard.size; i++) {
+    for (let j = 0; j < gameboard.size; j++) {
+      const square = document.createElement('div');
+      square.classList.add('square');
+      square.id = `${j}${gameboard.size - 1 - i}`;
+      square.style.gridRow = `${i + 2}`;
+      square.style.gridColumn = `${j + 2}`;
+
+      if (setup) {
+        square.addEventListener('click', () => {
+          renderPlacement(gameboard, j, i, 'click');
+        });
+
+        square.addEventListener('mouseover', () => {
+          renderPlacement(gameboard, j, i, 'mouseover');
+        });
+
+        square.addEventListener('mouseout', () => {
+          renderPlacement(gameboard, j, i, 'mouseout');
+        });
+      }
+
+      grid.append(square);
+    }
+  }
+};

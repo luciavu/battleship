@@ -3,6 +3,8 @@
 :root {
   --light: rgb(255, 253, 231);
   --dark: rgb(64, 64, 230);
+  --dark-light: rgb(114, 147, 245);
+  --light-med: rgb(244, 232, 232);
 }
 
 * {
@@ -27,7 +29,7 @@ header {
   display: none;
 }
 
-header * {
+.header-option {
   cursor: pointer;
   color: var(--light);
 }
@@ -44,7 +46,7 @@ header * {
 }
 
 .title {
-  text-shadow: 0.3rem 0.2rem 0.01rem rgb(114, 147, 245);
+  text-shadow: 0.3rem 0.2rem 0.01rem var(--dark-light);
   color: antiquewhite;
   cursor: pointer;
   padding-top: 5rem;
@@ -68,7 +70,7 @@ header * {
   cursor: pointer;
   font-size: 1.4rem;
   letter-spacing: 0.1rem;
-  color: rgb(252, 230, 102);
+  color: rgb(246, 218, 60);
 }
 
 .arrow {
@@ -81,7 +83,7 @@ header * {
 
 .option:hover,
 header *:hover {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .rules {
@@ -142,8 +144,8 @@ td {
   padding: 2rem 0;
   display: grid;
   padding-right: 1.5rem;
-  grid-template-columns: repeat(9, 2.5rem);
-  grid-template-rows: repeat(9, 2.5rem);
+  grid-template-columns: auto repeat(8, 2.5rem);
+  grid-template-rows: auto repeat(8, 2.5rem);
 }
 
 #player-board,
@@ -156,6 +158,7 @@ td {
 }
 
 .square {
+  cursor: pointer;
   width: 100%;
   height: 100%;
   display: flex;
@@ -166,6 +169,14 @@ td {
   opacity: 0.8;
 }
 
+.ship {
+  background-color: var(--dark-light);
+  background-color: rgb(114, 147, 245, 0.3);
+}
+
+.position {
+  background-color: rgb(244, 232, 232);
+}
 .hidden {
   visibility: hidden;
 }
@@ -231,8 +242,15 @@ td {
   font-weight: 800;
   background-color: var(--dark);
   color: var(--light);
-  padding: 1.2rem;
+  opacity: 0.6;
+  padding: 1rem 1.2rem;
 }
+
 .visible {
   display: flex;
+}
+
+.pressable {
+  cursor: pointer;
+  opacity: 1;
 }
