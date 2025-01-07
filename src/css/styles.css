@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 :root {
-  --light: rgb(255, 253, 231);
+  --light: rgb(255, 253, 232);
   --dark: rgb(64, 64, 230);
   --dark-light: rgb(114, 147, 245);
   --light-med: rgb(244, 232, 232);
@@ -169,12 +169,19 @@ td {
   opacity: 0.8;
 }
 
-.ship {
-  background-color: var(--dark-light);
-  background-color: rgb(114, 147, 245, 0.3);
+.len2 {
+  background-color: rgba(210, 218, 253, 0.5);
+}
+.len3 {
+  background-color: rgba(170, 191, 255, 0.5);
 }
 
-.position {
+.len4 {
+  background-color: rgb(114, 147, 245, 0.5);
+}
+
+.position,
+.selected {
   background-color: rgb(244, 232, 232);
 }
 .hidden {
@@ -207,7 +214,8 @@ td {
   gap: 3rem;
 }
 
-#start-game {
+#start-game,
+#new-game {
   cursor: pointer;
   margin-top: 1.3rem;
   font-size: 1.3rem;
@@ -232,10 +240,6 @@ td {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
-}
-
-#player-board.square {
-  cursor: none;
 }
 
 .remaining-ships {
@@ -268,6 +272,20 @@ td {
   padding: 1rem 1.2rem;
 }
 
+.invisible {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--light);
+  opacity: 0.8;
+  width: 100%;
+  height: 100%;
+}
+
 .visible {
   display: flex;
 }
@@ -276,4 +294,14 @@ td {
 #start-game:disabled {
   cursor: not-allowed;
   opacity: 0.6;
+}
+
+.hidden {
+  background-color: none;
+}
+
+.shot,
+.await-turn {
+  pointer-events: none;
+  cursor: default;
 }

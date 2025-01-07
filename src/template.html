@@ -15,7 +15,7 @@
       <div id="rules" class="header-option">Rules</div>
     </header>
     <!--Title screen-->
-    <div class="titlescreen visible">
+    <div class="titlescreen">
       <div class="title">࣪⊹₊  BATTLESHIP ˖⁺⊹</div>
       <div class="options">
         <div class="option">
@@ -60,7 +60,7 @@
       </div>
       <div class="description">
         After ships have been positioned, players will take turns to target a square on the
-        opponent's board to attack. <strong>If you land an attack, you can go again.</strong>
+        opponent's board to attack. <u>If you land an attack, you can go again.</u>
         <ul>
           <li>a 'hit' is marked by an X</li>
           <li>a 'miss' is marked by a .</li>
@@ -105,8 +105,11 @@
           <div class="computer-remaining-ships remaining-ships">Remaining Ships: 3</div>
         </div>
       </div>
-
-      <button id="attack" disabled>LAUNCH ATTACK</button>
+      <button id="attack">LAUNCH ATTACK</button>
+    </div>
+    <!--New game-->
+    <div class="invisible">
+      <button id="new-game">New Game</button>
     </div>
   </body>
 </html>
