@@ -5,6 +5,7 @@ export default class Gameboard {
     this.size = size;
     this.ships = [];
     this.missedShots = [];
+    this.shots = [];
   }
 
   placeShip(x, y, length, direction) {
@@ -14,6 +15,7 @@ export default class Gameboard {
     // Check coordinates not out of bounds before placing
     if (this.isValidPlacement(coordinates)) {
       this.ships.push({ ship, coordinates });
+      ship.coordinates = coordinates;
       return true;
     }
     // Else return false
@@ -58,13 +60,28 @@ export default class Gameboard {
         return x === coordinateInput[0] && y === coordinateInput[1];
       });
     });
+    this.shots.push(coordinateInput);
 
     if (shipHit) {
       shipHit.ship.hit();
-      return 'hit';
+      return shipHit.ship;
     } else {
       this.missedShots.push(coordinateInput);
-      return 'miss';
+      return false;
+    }
+  }
+
+  // Same as receive attack, but does not hit ship. Just reports result
+  willHit(coordinateInput) {
+    const shipHit = this.ships.find((shipData) => {
+      return shipData.coordinates.some(([x, y]) => {
+        return x === coordinateInput[0] && y === coordinateInput[1];
+      });
+    });
+    if (shipHit) {
+      return shipHit.ship;
+    } else {
+      return false;
     }
   }
 

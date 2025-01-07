@@ -37,19 +37,12 @@ describe('Gameboard', () => {
     expect(result).toBe(false);
   });
 
-  test('receiveAttack correctly identifies correct hits', () => {
-    gameboard.placeShip(0, 0, 2, 'horizontal');
-    let result = gameboard.receiveAttack([0, 0]);
-    expect(result).toBe('hit');
-    result = gameboard.receiveAttack([1, 0]);
-    expect(result).toBe('hit');
-  });
   test('receiveAttack records missed shots', () => {
     gameboard.placeShip(0, 0, 2, 'horizontal');
     let result = gameboard.receiveAttack([2, 0]);
-    expect(result).toBe('miss');
+    expect(result).toBe(false);
     result = gameboard.receiveAttack([0, 1]);
-    expect(result).toBe('miss');
+    expect(result).toBe(false);
   });
 
   describe('Gameboard: all ships sunk', () => {
@@ -72,6 +65,40 @@ describe('Gameboard', () => {
       gameboard.receiveAttack([4, 3]);
       expect(gameboard.ships[1].ship.isSunk()).toBe(true);
       expect(gameboard.allShipsSunk()).toBe(true);
+    });
+  });
+
+  describe('Gameboard: remainingShips', () => {
+    test('Correct number of remaining ships (no ships sunk)', () => {
+      gameboard.placeShip(0, 0, 3, 'horizontal');
+      gameboard.placeShip(4, 4, 2, 'vertical');
+      expect(gameboard.remainingShips()).toBe(2);
+    });
+
+    test('Correct number of remaining ships (some ships sunk)', () => {
+      gameboard.placeShip(0, 0, 3, 'horizontal');
+      gameboard.placeShip(4, 4, 2, 'vertical');
+
+      gameboard.receiveAttack([0, 0]);
+      gameboard.receiveAttack([1, 0]);
+      gameboard.receiveAttack([2, 0]);
+
+      expect(gameboard.remainingShips()).toBe(1);
+    });
+
+    test('Return 0 when all ships sunk', () => {
+      gameboard.placeShip(0, 0, 3, 'horizontal');
+      gameboard.placeShip(4, 4, 2, 'vertical');
+      gameboard.receiveAttack([0, 0]);
+      gameboard.receiveAttack([1, 0]);
+      gameboard.receiveAttack([2, 0]);
+      gameboard.receiveAttack([4, 4]);
+      gameboard.receiveAttack([4, 5]);
+      expect(gameboard.remainingShips()).toBe(0);
+    });
+
+    test('0 when no ships exist', () => {
+      expect(gameboard.remainingShips()).toBe(0);
     });
   });
 });

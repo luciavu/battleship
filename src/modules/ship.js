@@ -3,6 +3,7 @@ export default class Ship {
     this.length = length;
     this.hits = 0;
     this.hasSunk = false;
+    this.coordinates = [];
   }
 
   hit() {
