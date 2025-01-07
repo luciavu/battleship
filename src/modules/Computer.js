@@ -76,11 +76,15 @@ export default class Computer extends Player {
       if (this.directionsToTry.length === 0) {
         shot = this.getRandomCoordinates();
       } else {
-        shot = this.directionsToTry.pop();
+        const randomIndex = Math.floor(Math.random() * this.directionsToTry.length);
+        shot = this.directionsToTry[randomIndex];
+        this.directionsToTry.splice(randomIndex, 1);
       }
     } else {
       if (this.directionsToTry.length !== 0) {
-        shot = this.directionsToTry.pop();
+        const randomIndex = Math.floor(Math.random() * this.directionsToTry.length);
+        shot = this.directionsToTry[randomIndex];
+        this.directionsToTry.splice(randomIndex, 1);
       } else {
         shot = this.getRandomCoordinates();
       }
@@ -91,16 +95,16 @@ export default class Computer extends Player {
 
     // If hit, keep track of coordinate + surrounding
     if (result !== false) {
-      if (result.isSunk()) {
+      if (result.hits + 1 == result.length) {
         // Reset list when ship is sunk
         this.directionsToTry = [];
+      } else {
+        this.previousShot = {
+          coordinates: shot,
+          hit: true,
+        };
+        this.directionsToTry = this.getDirectionsAround(shot);
       }
-      this.previousShot = {
-        coordinates: shot,
-        hit: true,
-      };
-
-      this.directionsToTry = this.getDirectionsAround(shot);
     } else {
       // If miss, record shot
       this.previousShot = {
