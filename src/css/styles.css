@@ -14,6 +14,34 @@
   color: var(--dark);
 }
 
+@media only screen and (max-width: 1000px) {
+  * {
+    font-size: 14px;
+  }
+
+  body .game {
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .game .gameboards {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+@media only screen and (max-width: 700px) {
+  * {
+    font-size: 10px;
+  }
+  body .title {
+    font-size: 2.5rem;
+  }
+}
+
 body {
   margin: 0;
   height: 100vh;
@@ -182,7 +210,7 @@ td {
 
 .position,
 .selected {
-  background-color: rgb(244, 232, 232);
+  background-color: var(--light-med);
 }
 .hidden {
   visibility: hidden;
@@ -229,7 +257,7 @@ td {
   padding: 2rem;
   display: none;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 1.5rem;
   align-items: center;
   height: 100vh;
