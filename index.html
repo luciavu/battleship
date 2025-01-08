@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Battleship</title>
+  <script defer src="main.js"></script></head>
+  <body>
+    <header class="visible">
+      <div id="credits">
+        <a class="header-option" href="https://github.com/luciavu/battleship" target="_blank"
+          >Credits</a
+        >
+      </div>
+      <div id="rules" class="header-option">Rules</div>
+    </header>
+    <!--Title screen-->
+    <div class="titlescreen">
+      <div class="title">࣪⊹₊  BATTLESHIP ˖⁺⊹</div>
+      <div class="options">
+        <div class="option">
+          <div class="arrow" id="computerarrow">⏵</div>
+          <div class="option-text" id="computer">START GAME</div>
+        </div>
+      </div>
+    </div>
+    <!--Rules-->
+    <div class="rules">
+      <div id="back">&lt BACK</div>
+      <div class="description">
+        Battleship is a discovery game in which players need to discover their opponent's ship
+        positions.
+      </div>
+      <div class="description">
+        Each player secretly arranges their ships on their grid, either horizontically or
+        vertically. The number of squares taken up by each ship is determined by their type. Both
+        players have the same number and type of ships:
+        <table>
+          <tr>
+            <th>No.</th>
+            <th>Type</th>
+            <th>Length</th>
+          </tr>
+          <tr>
+            <td>1x</td>
+            <td>Battleship</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>2x</td>
+            <td>Submarine</td>
+            <td>3</td>
+          </tr>
+          <tr>
+            <td>3x</td>
+            <td>Patrol Boat</td>
+            <td>2</td>
+          </tr>
+        </table>
+      </div>
+      <div class="description">
+        After ships have been positioned, players will take turns to target a square on the
+        opponent's board to attack. <u>If you land an attack, you can go again.</u>
+        <ul>
+          <li>a 'hit' is marked by an X</li>
+          <li>a 'miss' is marked by an o</li>
+        </ul>
+      </div>
+      <div class="description">
+        If all of a player's ships have been sunk, the game is over and their opponent wins.
+      </div>
+    </div>
+
+    <!--Ship setup-->
+    <div class="ship-selection">
+      <div class="heading">Ship selection</div>
+      <div id="setup-grid"></div>
+      <div class="settings">
+        <div id="rotate" class="horizontal">Rotate</div>
+        <div id="reset">Reset</div>
+        <div id="random">Random</div>
+      </div>
+      <button id="start-game" disabled>Start Game</button>
+    </div>
+
+    <!--Game-->
+    <div class="game">
+      <div class="round-counter"></div>
+      <div class="heading game-status">MESSAGE HIT!</div>
+      <div class="gameboards">
+        <div class="player-info">
+          <div class="details">
+            <div class="player-name name"></div>
+            <div class="player-turn turn">TURN</div>
+          </div>
+          <div id="player-board"></div>
+          <div class="player-remaining-ships remaining-ships">Remaining Ships: 3</div>
+        </div>
+        <div class="computer-info">
+          <div class="details">
+            <div class="computer-name name"></div>
+            <div class="computer-turn turn">TURN</div>
+          </div>
+          <div id="computer-board"></div>
+          <div class="computer-remaining-ships remaining-ships">Remaining Ships: 3</div>
+        </div>
+      </div>
+      <button id="attack">LAUNCH ATTACK</button>
+    </div>
+    <!--New game-->
+    <div class="invisible">
+      <button id="new-game">New Game</button>
+    </div>
+  </body>
+</html>
